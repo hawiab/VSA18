@@ -37,6 +37,7 @@ def choose_word(wordlist):
     """
     return random.choice(wordlist)
 
+
 # end of helper code
 # -----------------------------------
 
@@ -51,32 +52,81 @@ wordlist = load_words()
 
 
 y = ""
-while y != "n" and y != "no":
+while y != "N" and y != "No":
     word = choose_word(wordlist)
-    guesses = 8
     alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-    wordlength = len(word)
+    c = 0
 
+    print '''
+| |                                            
+| |__   __ _ _ __   __ _ _ __ ___   __ _ _ __  
+| '_ \ / _` | '_ \ / _` | '_ ` _ \ / _` | '_ \ 
+| | | | (_| | | | | (_| | | | | | | (_| | | | |
+|_| |_|\__,_|_| |_|\__, |_| |_| |_|\__,_|_| |_|
+                    __/ |                      
+                    |___/                       
+        '''
     print "Welcome to the game, Hangman!"
+    while True:
+        try:
+            guesses = int(raw_input("How many guesses would you like? "))
+            break
+        except ValueError:
+            print "Please use a valid input"
+    twoplayer = raw_input("1 or 2 players? ")
+    if int(twoplayer) == 2:
+        while c != 80:
+            word = raw_input("Player 1. Choose your word: ")
+            word = word.lower()
+            word = word.replace(" ", "")
+            if word in wordlist:
+                print "CHEATER! You thought you were slick?"
+                while c != 80:
+                    print
+                    c = c+1
+            else:
+                print "Use a real word please. Choose again."
     print "I am thinking of a word that is", len(word),"letter(s) long."
     wordblank = ["_ "] * len(word)
+    wordlength = len(word)
 
     while True:
         if wordlength == 0:
-            print "--------------------"
-            print "Congratulations! You won the game! The word was", str(word) + "!"
+            print "------------------------------"
+            print
+            print "            You've escaped death."
+            print '''
+                     _
+                   _|_|_
+                    (_)
+                    \|/
+                     |
+                    / \\
+            '''
+            print "Congratulations! You won the game! The word was ""'"+word+"'."
             break
         elif guesses == 0:
-            print "--------------------"
-            print "Good try. The word is",word
+            print "------------------------------"
+            print '''
+                 _______
+                |/     |
+                |     (_)
+                |     \|/
+                |      |
+                |     / \\
+                |
+                |___
+            '''
+            print "Good try. The word is ""'"+word+"'."
             break
         else:
-            print "--------------------"
+            print "------------------------------"
             counter = 0
             deleted = 0
             print "Available Letters:"," ".join(alphabet)
             print "You have", guesses ,"guess(es) left."
-            letter = raw_input("Please guess a letter: ")
+            letter = raw_input("Please guess a letter or enter 'Exit' to end the game: ")
+            letter = letter.lower()
             if letter in alphabet:
                     if letter in word:
                         while counter < len(word):
@@ -88,15 +138,25 @@ while y != "n" and y != "no":
                                     deleted = 1
                             counter = counter + 1
                         print "Good Guess:", "".join(wordblank)
+
                     else:
                         print "Oops, that letter isn't in the word:", "".join(wordblank)
                         guesses = guesses - 1
+                        alphabet.remove(letter)
+            elif letter == "exit":
+                print "Sorry you had to go! The word was","'"+word+"'."
+                break
             else:
                 print "Guess again: "
     print "--------------------"
-    while y != "yes" or y != "y" or y != "no" or y != "n":
+    while y != "Yes" or y != "Y" or y != "No" or y != "N":
         y = raw_input("Do you want to play again? ")
-        if y == "yes" or y == "y" or y == "no" or y == "n":
+        y = y[0].upper() + y[1:].lower()
+        if y == "Yes" or y == "Y":
+            break
+        elif y == "No" or y == "N":
+            print( )
+            print "Thank you for playing!"
             break
         else:
             print "Type a valid answer."

@@ -11,9 +11,19 @@ def divisors(num):
     :param num: int
     :return: list (int)
     """
-
     # Fill in the function and change the return statment.
-    return 0
+    numlist = []
+    check = 1
+    while check <=num:
+        divisor = num%check
+        if divisor == 0:
+            numlist.append(check)
+            check = check + 1
+        else:
+            check = check + 1
+    return numlist
+
+
 
 def prime(num):
     """
@@ -21,10 +31,11 @@ def prime(num):
     :param num: int
     :return: bool
     """
+    # Fill in the function and change the return statement.
 
-    # Fill in the function and change the return statment.
+    if len(divisors(num)) == 2:
+        return True
     return False
-
 
 # Part II:
 # REVIEW: Conditionals, for loops, lists, and functions
@@ -39,10 +50,13 @@ def prime(num):
 # Hint: Use a for loop and with an append function: list.append(letter)
 #
 # sentence_string = "Hello, my name is Monty Python."
-
-
-
-
+# sentencelist = []
+# counter = 0
+# for item in sentence_string:
+#     letter = sentence_string[counter]
+#     sentencelist.append(letter)
+#     counter = counter + 1
+# print sentencelist
 
 # 2. Print every item of sentence_list on a separate line using a for loop, like this:
 # H
@@ -56,17 +70,17 @@ def prime(num):
 # y
 #  .... keeps going on from here.
 
-
-
-
 # 3: Write a for loop that goes through each letter in the list vowels. If the current
 # letter is 'b', print out the index of the current letter (should print out the
 # number 1).
-#
-# vowels = ['a', 'b', 'i', 'o', 'u', 'y']
 
-
-
+vowels = ['a', 'b', 'i', 'o', 'u', 'y']
+counter = 0
+while counter <= len(vowels):
+    if vowels[counter] == "b":
+        print counter
+    else:
+        counter = counter + 1
 
 # 4: use the index found to change the list vowels so that the b is replaced with an e.
 
@@ -89,5 +103,5 @@ def prime(num):
 
 # ['a', 'e', 'i', 'o', 'y']
 
-def vowelFinder(sentence_list, vowels):
-    return []
+# def vowelFinder(sentence_list, vowels):
+#     return []

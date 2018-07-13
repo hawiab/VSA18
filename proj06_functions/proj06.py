@@ -74,29 +74,56 @@ def prime(num):
 # letter is 'b', print out the index of the current letter (should print out the
 # number 1).
 
-vowels = ['a', 'b', 'i', 'o', 'u', 'y']
-counter = 0
-while counter <= len(vowels):
-    if vowels[counter] == "b":
-        print counter
-    else:
-        counter = counter + 1
+# vowels = ['a', 'b', 'i', 'o', 'u', 'y']
+# counter = 0
+# while counter <= len(vowels):
+#     if vowels[counter] == "b":
+#         break
+#     else:
+#         counter = counter + 1
+# print counter
 
 # 4: use the index found to change the list vowels so that the b is replaced with an e.
-
+# for letter in vowels:
+#     vowels[1]="e"
+# print vowels
 
 
 # 5: Loop through each letter in the sentence_string. For each letter, check to see if the
 #  number is in the vowels list. If the letter is in the vowels list, add one to a
 # counter. Print out the counter at the end of the loop. This counter should show how
 # many vowels are in sentence_string.
-
+# counter = 0
+# for letter in sentence_string:
+#     if letter in vowels:
+#         counter = counter + 1
+# print counter
 
 
 # 6: Make a new function called "vowelFinder" that will return a list of  the vowels
 # found in a list (no duplicates).The function's parameters should be "list" and "vowels."
+vowels = ['a', 'e', 'i', 'o', 'u', 'y']
+def vowelFinder(list, vowels):
+    counter = 0
+    letter = list[counter]
+    vowellist = []
+    finalvowel= []
+    lastvowel=[]
+    for letter in list:
+        if letter in vowels:
+            vowellist.append(letter)
+            finalvowel.append(letter)
+            counter = counter + 1
+        else:
+            counter = counter + 1
+    for item in vowellist:
+        if item in finalvowel and item not in lastvowel:
+            lastvowel.append(item)
+    lastvowel = sorted(lastvowel)
+    return lastvowel
 
-
+sentence = ["H","e","l","l","o","h","o","w","a","r","e","y","o","u"]
+print vowelFinder(sentence, vowels)
 #  Example:
 # vowelList = vowelFinder(sentence_list, vowels)
 # print vowelList

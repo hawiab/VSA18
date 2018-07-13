@@ -27,13 +27,11 @@ NumBlank = len(Number) * "_"
 NumLength = len(Number)
 Yes = ""
 print "Welcome to the cows and bulls game!"
-
+print Number
 while Yes != "No":
     Counter = 0
     Cow = 0
     Bull = 0
-
-    print Number
 
     UserNum = raw_input("Enter a number: ")
     if UserNum == Number:
@@ -43,11 +41,10 @@ while Yes != "No":
             if UserNum[Counter] in Number:
                 if UserNum[Counter] == Number[Counter]:
                     Cow = Cow + 1
+                    Counter = Counter + 1
                 else:
                     Bull = Bull + 1
+                    Counter = Counter + 1
             Counter = Counter + 1
-        print Cow and Bull
-
-
-
+            print "You have", Cow, "cows and",Bull,"bulls."
 

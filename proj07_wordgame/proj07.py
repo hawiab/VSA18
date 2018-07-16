@@ -77,6 +77,14 @@ def get_word_score(word, n):
     returns: int >= 0
     """
     # TO DO...
+    wordAsList = list(word)
+    value = 0
+    for item in wordAsList:
+        value+=SCRABBLE_LETTER_VALUES[item]
+    value *= len(wordAsList)
+    if len(wordAsList)==n:
+        value+=50
+    return value
     
 #
 # Make sure you understand how this function works and what it does!
@@ -93,6 +101,7 @@ def display_hand(hand):
 
     hand: dictionary (string -> int)
     """
+    print "Current hand: ",
     for letter in hand.keys():
         for j in range(hand[letter]):
              print letter,              # print all on the same line
@@ -146,7 +155,11 @@ def update_hand(hand, word):
     returns: dictionary (string -> int)
     """
     # TO DO ...
-
+    word = get_frequency_dict(word)
+    newHand = hand.copy()
+    for item in word:
+        newHand[item] = newHand[item] - word[item]
+    return newHand
 #
 # Problem #3: Test word validity
 #
@@ -161,6 +174,14 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     """
     # TO DO...
+    if word not in word_list:
+        return False
+    word = get_frequency_dict(word)
+    for item in word:
+        if hand.get(item,0)<word.get(item,0):
+            return False
+    return True
+
 
 def calculate_handlen(hand):
     handlen = 0
@@ -177,31 +198,45 @@ def play_hand(hand, word_list):
     Allows the user to play the given hand, as follows:
 
     * The hand is displayed.
-    
+        # done
     * The user may input a word.
-
+        # done
     * An invalid word is rejected, and a message is displayed asking
       the user to choose another word.
-
+        done
     * When a valid word is entered, it uses up letters from the hand.
-
+        done
     * After every valid word: the score for that word is displayed,
       the remaining letters in the hand are displayed, and the user
       is asked to input another word.
-
+        done
     * The sum of the word scores is displayed when the hand finishes.
-
+        done
     * The hand finishes when there are no more unused letters.
       The user can also finish playing the hand by inputing a single
       period (the string '.') instead of a word.
-
+        done
       hand: dictionary (string -> int)
       word_list: list of lowercase strings
       
     """
     # TO DO ...
+    score = 0
+    while len(hand)>0:
+        display_hand(hand)
+        userWord = raw_input("Enter a word, or '.' to indicate that you are finished: ")
+        if userWord == '.':
+            break
+        if is_valid_word(userWord,hand,word_list) == False:
+            print "Invalid word, please try again."
+            userWord = raw_input("Enter a word, or '.' to indicate that you are finished: ")
+        hand = update_hand(hand,userWord)
+        score += get_word_score(userWord, calculate_handlen(hand))
+        print userWord + " earned", get_word_score(userWord, calculate_handlen(hand)),"points. Total:",score,"points."
+    print "Total score:", score, "points."
 
-#
+
+
 # Problem #5: Playing a game
 # Make sure you understand how this code works!
 # 
@@ -221,7 +256,18 @@ def play_game(word_list):
     * If the user inputs anything else, ask them again.
     """
     # TO DO...
-
+    choice = raw_input("Enter 'n' for a new random hand, 'r' for the last hand, or 'e' to exit the game: ")
+    HAND_SIZE = int(raw_input("What size hand would you like for your game? "))
+    hand = deal_hand(HAND_SIZE)
+    while choice != 'e':
+        if choice == 'n':
+            hand = deal_hand(HAND_SIZE)
+            play_hand(hand,word_list)
+        elif choice == 'r':
+            play_hand(hand, word_list)
+        else:
+            print "Your answer was invalid. Please enter a valid answer."
+        choice = raw_input("Enter 'n' for a new random hand, 'r' for the last hand, or 'e' to exit the game: ")
 #
 # Build data structures used for entire session and play game
 #

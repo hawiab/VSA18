@@ -5,6 +5,7 @@
 
 import random
 import string
+import shelve
 
 VOWELS = 'aeiou'
 CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
@@ -21,6 +22,29 @@ SCRABBLE_LETTER_VALUES = {
 # (you don't need to understand this helper code)
 
 WORDLIST_FILENAME = "words.txt"
+def get_high_score():
+    high_score = 0
+    try:
+        high_score_file = open("high_score.txt", "r")
+        high_score = int(high_score_file.read())
+        high_score_file.close()
+        print
+        print "The high score is "+str(high_score)+"."
+    except IOError:
+        # Error reading file, no high score
+        print("There is no high score yet.")
+    except ValueError:
+        # There's a file there, but we don't understand the number.
+        print("I'm confused. Starting with no high score.")
+
+    return high_score
+def save_high_score(new_high_score):
+    try:
+        high_score_file = open("high_score.txt", "w")
+        high_score_file.write(str(new_high_score))
+        high_score_file.close()
+    except IOError:
+        print("Unable to save the high score.")
 
 def load_words():
     """
@@ -222,19 +246,37 @@ def play_hand(hand, word_list):
     """
     # TO DO ...
     score = 0
-    while calculate_handlen(hand)>0:
-        display_hand(hand)
-        userWord = raw_input("Enter a word, or '.' to indicate that you are finished: ")
-        if userWord == '.':
-            break
-        if is_valid_word(userWord,hand,word_list) == False:
-            print "Invalid word, please try again."
+    while calculate_handlen(hand)>=0:
+        while True:
+            if calculate_handlen(hand)==0:
+                high_score = get_high_score()
+                if score > high_score:
+                    print("Yea! New high score!")
+                    print
+                    save_high_score(score)
+                else:
+                    print("Better luck next time.")
+                    print
+                break
+            print
+            display_hand(hand)
             userWord = raw_input("Enter a word, or '.' to indicate that you are finished: ")
             if userWord == '.':
+                high_score = get_high_score()
+                if score > high_score:
+                    print("Yes! New high score!")
+                    print
+                    save_high_score(score)
+                else:
+                    print("Better luck next time.")
+                    print
                 break
-        hand = update_hand(hand,userWord)
-        score += get_word_score(userWord, len(hand))
-        print userWord + " earned", get_word_score(userWord, len(hand)),"points. Total:",score,"points."
+            if is_valid_word(userWord,hand,word_list) == False:
+                print "Invalid word, please try again."
+                break
+            hand = update_hand(hand,userWord)
+            score += get_word_score(userWord, len(hand))
+            print userWord + " earned", get_word_score(userWord, len(hand)),"points. Total:",score,"points."
     print "Total score:", score, "points."
 
 
@@ -258,10 +300,19 @@ def play_game(word_list):
     * If the user inputs anything else, ask them again.
     """
     # TO DO...
-    choice = raw_input("Enter 'n' for a new random hand, 'r' for the last hand, or 'e' to exit the game: ")
-    HAND_SIZE = int(raw_input("What size hand would you like for your game? "
-                              ""
-                              ""))
+    print("Welcome to Word Scramble!")
+    while True:
+        choice = raw_input("Enter 'n' for a new random hand: ")
+        if choice != 'n':
+            print("Please use a valid input.")
+        else:
+            break
+    while True:
+        try:
+            HAND_SIZE = int(raw_input("How many letters would you like? "))
+            break
+        except ValueError:
+            print "Please use a valid input."
     hand = deal_hand(HAND_SIZE)
     while choice != 'e':
         if choice == 'n':

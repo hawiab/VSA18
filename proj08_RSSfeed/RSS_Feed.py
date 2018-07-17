@@ -57,22 +57,37 @@ class NewsStory(object):
         * summary
         * link
     """
-    def __init__(self, guid):
+    def __init__(self, guid, title, subject, summary, link):
         """
         Returns a NewsStory object with the following attributes
-        :param guid: a string that serves as a unique name for this entry 
+        :param guid: a string that serves as a unique name for this entry
         :param title: string
         :param subject: string
         :param summary: string
-        :param link: string     
+        :param link: string
         """
         self.guid = guid
+        self.title = title
+        self.subject = subject
+        self.summary = summary
+        self.link = link
 
     def get_guid(self):
         return self.guid
 
-# Your job is to write functions for the other 4 attributes.
+    def get_title(self):
+        return self.title
 
+    def get_subject(self):
+        return self.subject
+
+    def get_summary(self):
+        return self.summary
+
+    def get_link(self):
+        return self.link
+
+# Your job is to write functions for the other 4 attributes.
 
 #======================
 # Part 2
@@ -96,6 +111,21 @@ class Trigger(object):
 # TODO: WordTrigger
 
 # Create a class, WordTrigger, that is a subclass of trigger.
+class WordTrigger(Trigger):
+    def __init__(self, word):
+        self.word = word
+
+    def is_word_in(self, stri):
+        stri = stri.replace(string.punctuation, "")
+        wordlist = []
+        stringy = stri.lower()
+        wordlist = stringy.split(" ")
+
+        if word in wordlist:
+            return True
+        elif word not in wordlist:
+            return False
+        return False
 
 # You will need a constructor (an "init" method). This constructor should take a word
 # and save the word as part of itself (just like NewsStory takes a guid and saves it as
@@ -112,7 +142,6 @@ class Trigger(object):
 
 
 
-
 # Each of the three triggers below can be completed in three lines.
 # First, define the new class, which is a subclass of WordTrigger.
 # You do NOT need a constructor, because this is inherited from WordTrigger.
@@ -121,10 +150,21 @@ class Trigger(object):
 #  if the word is in the appropriate part of the story (for example, for title trigger,
 # to see if the word is in the title of the story).
 # TODO: TitleTrigger
+class TitleTrigger(WordTrigger):
+    def __init__(self, title):
+        self.title = title
+    is_word_in(self, stri)
+
 # TODO: SubjectTrigger
+class SubjectTrigger(WordTrigger):
+    def __init__(self, subject):
+        self.subject = subject
+    is_word_in(self, stri)
 # TODO: SummaryTrigger
-
-
+class SummaryTrigger(WordTrigger):
+    def __init__(self, summary):
+        self.summary = summary
+    is_word_in(self, stri)
 # Composite Triggers
 # Problems 6-8
 

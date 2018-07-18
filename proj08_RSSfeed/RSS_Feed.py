@@ -113,19 +113,20 @@ class Trigger(object):
 # Create a class, WordTrigger, that is a subclass of trigger.
 class WordTrigger(Trigger):
     def __init__(self, word):
-        self.word = word
-
-    def is_word_in(self, stri):
-        stri = stri.replace(string.punctuation, "")
-        wordlist = []
-        stringy = stri.lower()
-        wordlist = stringy.split(" ")
-
-        if word in wordlist:
-            return True
-        elif word not in wordlist:
-            return False
+        self.word = word.lower()
+    def is_word_in(self, story):
+        wordstring = " "
+        for letter in story:
+            if letter in string.punctuation:
+                wordstring += " "
+            else:
+                wordstring += letter
+        wordstringi = wordstring.split(" ")
+        for l in wordstringi:
+            if l.lower() == self.word:
+                return True
         return False
+
 
 # You will need a constructor (an "init" method). This constructor should take a word
 # and save the word as part of itself (just like NewsStory takes a guid and saves it as
@@ -151,20 +152,16 @@ class WordTrigger(Trigger):
 # to see if the word is in the title of the story).
 # TODO: TitleTrigger
 class TitleTrigger(WordTrigger):
-    def __init__(self, title):
-        self.title = title
-    is_word_in(self, stri)
-
+    def evaluate(self, story):
+        return WordTrigger.is_word_in(self, story.get_title())
 # TODO: SubjectTrigger
 class SubjectTrigger(WordTrigger):
-    def __init__(self, subject):
-        self.subject = subject
-    is_word_in(self, stri)
+    def evaluate(self, story):
+        return WordTrigger.is_word_in(self, story.get_subject())
 # TODO: SummaryTrigger
 class SummaryTrigger(WordTrigger):
-    def __init__(self, summary):
-        self.summary = summary
-    is_word_in(self, stri)
+    def evaluate(self, story):
+        return WordTrigger.is_word_in(self, story.get_summary())
 # Composite Triggers
 # Problems 6-8
 
@@ -173,10 +170,27 @@ class SummaryTrigger(WordTrigger):
 #  class WordTigger.
 # They will also need an evaluate method.
 # TODO: NotTrigger
+class NotTrigger(Trigger):
+    def __init__(self, T):
+         self.T = T
+    def evaluate(self, story):
+        return not self.T.evaluate(story)
 # TODO: AndTrigger
-# TODO: OrTrigger
-
-
+class AndTrigger(Trigger):
+    def __init__(self, t1, t2):
+        self.t1 = t1
+        self.t2 = t2
+    def evaluate(self, story):
+         if self.t1.evaluate(story) == True and self.t2.evaluate(story) == True:
+             return True
+         else:
+             return False
+# # TODO: OrTrigger
+class OrTrigger(Trigger):
+    def __init__(self, story):
+    def evaluate(self, story):
+# #
+#
 # Phrase Trigger
 # Question 9
 

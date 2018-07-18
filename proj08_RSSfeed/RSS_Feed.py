@@ -187,8 +187,14 @@ class AndTrigger(Trigger):
              return False
 # # TODO: OrTrigger
 class OrTrigger(Trigger):
-    def __init__(self, story):
+    def __init__(self, t1, t2):
+        self.t1 = t1
+        self.t2 = t2
     def evaluate(self, story):
+        if self.t1.evaluate(story) == True or self.t2.evaluate(story) == True:
+            return True
+        else:
+            return False
 # #
 #
 # Phrase Trigger
@@ -197,6 +203,15 @@ class OrTrigger(Trigger):
 # This is also a subclass of Trigger, so it will need a constructor and an evaluate
 # method.
 # TODO: PhraseTrigger
+class PhraseTrigger(Trigger):
+    def __init__(self, phrase):
+        self.phrase = phrase
+    def evaluate(self, story):
+        if self.phrase in story.get_title() or self.phrase in story.get_summary() or self.phrase in story.get_subject():
+            return True
+        else:
+            return False
+
 
 
 #======================
@@ -213,7 +228,22 @@ def filter_stories(stories, triggerlist):
     # TODO: Problem 10
     # This is a placeholder (we're just returning all the stories, with no filtering) 
     # Feel free to change this line!
-    return stories
+    triggerstories = []
+    title = TitleTrigger(stories)
+    subject = SubjectTrigger(stories)
+    summary = SummaryTrigger(stories)
+    no = NotTrigger(stories)
+    andd = AndTrigger(stories)
+    orr = OrTrigger(stories)
+    phrase = PhraseTrigger
+    while True:
+        if title == True or subject == True or summary == True or no == True or andd == True or orr == True or phrase == True:
+            triggerstories.append(stories)
+    return triggerstories
+
+
+
+
 
 #======================
 # Extensions: Part 4

@@ -4,9 +4,8 @@
 
 import math
 import random
-
 import proj09_visualize
-import pylab
+# import pylab
 
 # === Provided classes
 
@@ -65,7 +64,23 @@ class RectangularRoom(object):
         width: an integer > 0
         height: an integer > 0
         """
+        #defining width and height
+        self.width = width
+        self.height = height
+        #defining area of rectangle
+        self.areaOfRectangle = width*height
         raise NotImplementedError
+        #floortiles is a dictionary for us to assign values to each tile
+        floortiles = {}
+        # the amount of tiles is equal to the area of a rectangle
+        amountOfTiles = self.areaOfRectangle
+        # list is used to convert the amount of tiles to a list of individual tiles in order to convert to dictionary
+        listOfTiles = []
+        counter = 0
+        for tile in range(0,width):
+            tile = (((1/width)width)*((1/height)*height))
+
+
     
     def cleanTileAtPosition(self, pos):
         """
@@ -75,6 +90,22 @@ class RectangularRoom(object):
 
         pos: a Position
         """
+        #determines whether tile is clean or dirty depending on the position
+        currentposition == 0
+        #the loop should stop when there are no more tiles
+        counter = 0
+        #for robot in position
+        for Robot in pos:
+        #if the counter exceeds the amount of tiles, the program should stop
+            if counter < int(width*height):
+                #if robot is in a position mark as clean with clean = 0 and dirty = 1
+                if Robot in pos:
+                    currentposition == 0
+                    counter = counter + 1
+                else:
+                    currentposition == 1
+                    counter = counter + 1
+
         raise NotImplementedError
 
     def isTileCleaned(self, m, n):
@@ -95,6 +126,7 @@ class RectangularRoom(object):
 
         returns: an integer
         """
+        amountOf
         raise NotImplementedError
 
     def getNumCleanedTiles(self):

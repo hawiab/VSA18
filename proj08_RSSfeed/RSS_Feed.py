@@ -229,16 +229,11 @@ def filter_stories(stories, triggerlist):
     # This is a placeholder (we're just returning all the stories, with no filtering) 
     # Feel free to change this line!
     triggerstories = []
-    title = TitleTrigger(stories)
-    subject = SubjectTrigger(stories)
-    summary = SummaryTrigger(stories)
-    no = NotTrigger(stories)
-    andd = AndTrigger(stories)
-    orr = OrTrigger(stories)
-    phrase = PhraseTrigger
-    while True:
-        if title == True or subject == True or summary == True or no == True or andd == True or orr == True or phrase == True:
-            triggerstories.append(stories)
+    for trigger in triggerlist:
+        for story in stories:
+            if trigger.evaluate(story) == True:
+                if story not in triggerstories:
+                    triggerstories.append(story)
     return triggerstories
 
 

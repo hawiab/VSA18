@@ -64,24 +64,20 @@ class RectangularRoom(object):
         width: an integer > 0
         height: an integer > 0
         """
-        #defining width and height
+        # defining width, height, and creating the floor
         self.width = width
         self.height = height
-        #defining area of rectangle
-        self.areaOfRectangle = width*height
+        self.floor = self.createtiles()
         raise NotImplementedError
-        #floortiles is a dictionary for us to assign values to each tile
-        floortiles = {}
-        # the amount of tiles is equal to the area of a rectangle
-        amountOfTiles = self.areaOfRectangle
-        # list is used to convert the amount of tiles to a list of individual tiles in order to convert to dictionary
-        listOfTiles = []
-        counter = 0
-        for tile in range(0,width):
-            tile = (((1/width)width)*((1/height)*height))
 
+    # this function creates a list of dirty tiles
+    def createtiles(self, width, height):
+        listoftiles = []
+        for x in range(width):
+            for y in range(height):
+                listoftiles.append(x,y,"dirty")
+        return listoftiles
 
-    
     def cleanTileAtPosition(self, pos):
         """
         Mark the tile under the position POS as cleaned.
@@ -90,22 +86,17 @@ class RectangularRoom(object):
 
         pos: a Position
         """
-        #determines whether tile is clean or dirty depending on the position
-        currentposition == 0
-        #the loop should stop when there are no more tiles
-        counter = 0
-        #for robot in position
-        for Robot in pos:
-        #if the counter exceeds the amount of tiles, the program should stop
-            if counter < int(width*height):
-                #if robot is in a position mark as clean with clean = 0 and dirty = 1
-                if Robot in pos:
-                    currentposition == 0
-                    counter = counter + 1
-                else:
-                    currentposition == 1
-                    counter = counter + 1
+        #getting the position
+        x = int(pos.getX())
+        y = int(pos.getY())
+        #
+        for item in self.floor:
+            if item[0] == x and item[1] == y:
+                item[2] = "clean"
+        return self.floor
 
+
+        if
         raise NotImplementedError
 
     def isTileCleaned(self, m, n):
@@ -119,7 +110,7 @@ class RectangularRoom(object):
         returns: True if (m, n) is cleaned, False otherwise
         """
         raise NotImplementedError
-    
+
     def getNumTiles(self):
         """
         Return the total number of tiles in the room.
@@ -183,7 +174,7 @@ class Robot(object):
         returns: a Position object giving the robot's position.
         """
         raise NotImplementedError
-    
+
     def getRobotDirection(self):
         """
         Return the direction of the robot.
@@ -260,16 +251,15 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
 
 
 # === Problem 4
+
 #
-# 1) How long does it take to clean 80% of a 20�20 room with each of 1-10 robots?
-#
-# 2) How long does it take two robots to clean 80% of rooms with dimensions 
-#	 20�20, 25�16, 40�10, 50�8, 80�5, and 100�4?
+# 2) How long does it take two robots to clean 80% of rooms with dimensions
+
 
 def showPlot1():
     """
     Produces a plot showing dependence of cleaning time on number of robots.
-    """ 
+    """
     raise NotImplementedError
 
 def showPlot2():

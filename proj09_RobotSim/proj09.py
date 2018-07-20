@@ -67,14 +67,14 @@ class RectangularRoom(object):
         # defining width, height, and creating the floor
         self.width = width
         self.height = height
-        self.floor = self.createtiles()
+        self.floor = self.createtiles(width, height)
 
     # this function creates a list of dirty tiles
     def createtiles(self, width, height):
         listoftiles = []
         for x in range(width):
             for y in range(height):
-                listoftiles.append(x,y,"dirty")
+                listoftiles.append([x,y,"dirty"])
         return listoftiles
 
     def cleanTileAtPosition(self, pos):
@@ -179,11 +179,11 @@ class Robot(object):
         room:  a RectangularRoom object.
         speed: a float (speed > 0)
         """
-        self.room = room.cleanTileAtPosition(self.pos)
+        self.room = room.cleanTileAtPosition(self.position)
         if speed > 0:
             self.speed = speed
         self.direction = int(360*random.random())
-        self.position = position
+        self.position = getRandomPosition()
 
     def getRobotPosition(self):
         """
@@ -225,7 +225,7 @@ class Robot(object):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-       raise NotImplementedError
+        raise NotImplementedError
 
 
 
@@ -273,11 +273,21 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     robot_type: class of robot to be instantiated (e.g. Robot or
                 RandomWalkRobot)
     """
+    robots = []
+    counter = 0
     room = RectangularRoom(width, height)
-    if robot_type == 'standard'
-        StandardRobot(room,
-    raise NotImplementedError
-
+    while num_trials != 0:
+        anim = proj09_visualize.RobotVisualization(num_trials,width,height)
+        if num_robots > 0:
+            while counter <= num_robots:
+                if robot_type == 'standard':
+                    room = RectangularRoom(width, height)
+                    stanrobot = StandardRobot(room, speed)
+                    robots.append(stanrobot)
+                    counter = counter + 1
+        if min_coverage * room.getNumTiles() == room.getNumCleanedTiles():
+            num_trials = num_trials - 1
+        anim.done()
 
 # === Problem 4
 
@@ -285,35 +295,37 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
 # 2) How long does it take two robots to clean 80% of rooms with dimensions
 
 
-def showPlot1():
-    """
-    Produces a plot showing dependence of cleaning time on number of robots.
-    """
-    raise NotImplementedError
-
-def showPlot2():
-    """
-    Produces a plot showing dependence of cleaning time on room shape.
-    """
-    raise NotImplementedError
-
-# === Problem 5
-
-class RandomWalkRobot(Robot):
-    """
-    A RandomWalkRobot is a robot with the "random walk" movement strategy: it
-    chooses a new direction at random after each time-step.
-    """
-    raise NotImplementedError
-
-
-# === Problem 6
-
-# For the parameters tested below (cleaning 80% of a 20x20 square room),
-# RandomWalkRobots take approximately twice as long to clean the same room as
-# StandardRobots do.
-def showPlot3():
-    """
-    Produces a plot comparing the two robot strategies.
-    """
-    raise NotImplementedError
+# def showPlot1():
+#     """
+#     Produces a plot showing dependence of cleaning time on number of robots.
+#     """
+#     raise NotImplementedError
+#
+# def showPlot2():
+#     """
+#     Produces a plot showing dependence of cleaning time on room shape.
+#     """
+#     raise NotImplementedError
+#
+# # === Problem 5
+#
+# class RandomWalkRobot(Robot):
+#     """
+#     A RandomWalkRobot is a robot with the "random walk" movement strategy: it
+#     chooses a new direction at random after each time-step.
+#     """
+#     raise NotImplementedError
+#
+#
+# # === Problem 6
+#
+# # For the parameters tested below (cleaning 80% of a 20x20 square room),
+# # RandomWalkRobots take approximately twice as long to clean the same room as
+# # StandardRobots do.
+# def showPlot3():
+#     """
+#     Produces a plot comparing the two robot strategies.
+#     """
+#     raise NotImplementedError
+#
+avg = runSimulation(10,1.0,15,20,0.8,2,'standard')

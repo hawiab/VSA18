@@ -141,11 +141,10 @@ class RectangularRoom(object):
 
         returns: a Position object.
         """
-        randcoord = []
-        random = random.randint(x, y)
-        for x in range(width):
-            for y in range(height)
-                randcoord.append(x,y)
+
+        randomx  = random.randint(0, width)
+        randomy = random.randint(0,height)
+        randcoord = Position(randomx, randomy)
         return randcoord
 
     def isPositionInRoom(self, pos):
@@ -171,7 +170,7 @@ class Robot(object):
     Subclasses of Robot should provide movement strategies by implementing
     updatePositionAndClean(), which simulates a single time-step.
     """
-    def __init__(self, room, speed, direction, position):
+    def __init__(self, room, speed):
         """
         Initializes a Robot with the given speed in the specified room. The
         robot initially has a random direction and a random position in the
@@ -183,7 +182,7 @@ class Robot(object):
         self.room = room.cleanTileAtPosition(self.pos)
         if speed > 0:
             self.speed = speed
-        self.direction = direction
+        self.direction = int(360*random.random())
         self.position = position
 
     def getRobotPosition(self):
@@ -226,13 +225,6 @@ class Robot(object):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        for Robot in self.position:
-            if Robot.isTileCleaned(self.position) == True:
-                self.position = Robot.getRobotDirection(self, self.direction, self.speed)
-            else:
-                Robot.cleanTileAtPosition(self, self.position)
-                self.position = Robot.getRobotDirection(self, self.direction, self.speed)
-        return self.position
        raise NotImplementedError
 
 
@@ -252,7 +244,14 @@ class StandardRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
+        if Robot.isPositionInRoom == False:
+            self.direction = self.direction + 180
+        if Robot.isTileCleaned(self.position) == True:
+            self.position = Robot.getRobotDirection(self, self.direction, self.speed)
+        else:
+            Robot.cleanTileAtPosition(self, self.position)
+            self.position = Robot.getRobotDirection(self, self.direction, self.speed)
+        return self.position
 
 # === Problem 3
 
@@ -274,6 +273,9 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     robot_type: class of robot to be instantiated (e.g. Robot or
                 RandomWalkRobot)
     """
+    room = RectangularRoom(width, height)
+    if robot_type == 'standard'
+        StandardRobot(room,
     raise NotImplementedError
 
 

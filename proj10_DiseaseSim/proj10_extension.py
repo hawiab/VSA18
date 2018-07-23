@@ -38,11 +38,12 @@ class ResistantVirus(SimpleVirus):
         the probability of the offspring acquiring or losing resistance to a drug.        
 
         """
-
+        self.maxBirthProb = maxBirthProb
+        self.clearProp = clearProb
+        self.resistances = resistances
+        self.mutProb = mutProb
 
         # TODO
-
-
 
     def isResistantTo(self, drug):
 
@@ -55,9 +56,12 @@ class ResistantVirus(SimpleVirus):
         returns: True if this virus instance is resistant to the drug, False
         otherwise.
         """
-
+        for drug in virus:
+            if drug in self.resistances == "True":
+                return True
+            else:
+                return False
         # TODO
-
 
     def reproduce(self, popDensity, activeDrugs):
 
@@ -67,41 +71,49 @@ class ResistantVirus(SimpleVirus):
 
         If the virus particle is not resistant to any drug in activeDrugs,
         then it does not reproduce. Otherwise, the virus particle reproduces
-        with probability:       
-        
-        self.maxBirthProb * (1 - popDensity).                       
-        
+        with probability:
+
+        self.maxBirthProb * (1 - popDensity).
+
         If this virus particle reproduces, then reproduce() creates and returns
         the instance of the offspring ResistantVirus (which has the same
-        maxBirthProb and clearProb values as its parent). 
+        maxBirthProb and clearProb values as its parent).
 
         For each drug resistance trait of the virus (i.e. each key of
         self.resistances), the offspring has probability 1-mutProb of
         inheriting that resistance trait from the parent, and probability
-        mutProb of switching that resistance trait in the offspring.        
+        mutProb of switching that resistance trait in the offspring.
 
         For example, if a virus particle is resistant to drug_a but not
         drug_b, and `self.mutProb` is 0.1, then there is a 10% chance that
-        that the offspring will lose resistance to drug_a and a 90% 
+        that the offspring will lose resistance to drug_a and a 90%
         chance that the offspring will be resistant to drug_a.
         There is also a 10% chance that the offspring will gain resistance to
         drug_b and a 90% chance that the offspring will not be resistant to
         drug_b.
 
         popDensity: the population density (a float), defined as the current
-        virus population divided by the maximum population        
+        virus population divided by the maximum population
 
         activeDrugs: a list of the drug names acting on this virus particle
-        (a list of strings). 
-        
+        (a list of strings).
+
         returns: a new instance of the ResistantVirus class representing the
         offspring of this virus particle. The child should have the same
         maxBirthProb and clearProb values as this virus. Raises a
-        NoChildException if this virus particle does not reproduce.         
+        NoChildException if this virus particle does not reproduce.
         """
         # TODO
+        if virus.isResistantTo == True:
+            r = random.random()
+            repProb = self.maxBirthProb * (1 - popDensity)
+            if r < repProb:
+                return ResistantVirus
+            else:
+                raise NoChildException
+        else:
+            raise NoChildException
 
-            
 
 class Patient(SimplePatient):
 
@@ -114,20 +126,21 @@ class Patient(SimplePatient):
         """
         Initialization function, saves the viruses and maxPop parameters as
         attributes. Also initializes the list of drugs being administered
-        (which should initially include no drugs).               
+        (which should initially include no drugs).
 
         viruses: the list representing the virus population (a list of
         SimpleVirus instances)
-        
+
         maxPop: the  maximum virus population for this patient (an integer)
         """
         # TODO
-    
+        self.viruses = viruses
+        self.maxPop = maxPop
 
     def addPrescription(self, newDrug):
 
         """
-        Administer a drug to this patient. After a prescription is added, the 
+        Administer a drug to this patient. After a prescription is added, the
         drug acts on the virus population for all subsequent time steps. If the
         newDrug is already prescribed to this patient, the method has no effect.
 
@@ -137,7 +150,7 @@ class Patient(SimplePatient):
         """
         # TODO
         # should not allow one drug being added to the list multiple times
-
+        
 
     def getPrescriptions(self):
 
@@ -148,12 +161,12 @@ class Patient(SimplePatient):
         """
 
         # TODO
-        
+
 
     def getResistPop(self, drugResist):
         """
-        Get the population of virus particles resistant to the drugs listed in 
-        drugResist.        
+        Get the population of virus particles resistant to the drugs listed in
+        drugResist.
 
         drugResist: Which drug resistances to include in the population (a list
         of strings - e.g. ['drug_a'] or ['drug_a', 'drug_b'])
@@ -162,7 +175,7 @@ class Patient(SimplePatient):
         drugs in the drugResist list.
         """
         # TODO
-                   
+
 
 
     def update(self):
@@ -170,15 +183,15 @@ class Patient(SimplePatient):
         """
         Update the state of the virus population in this patient for a single
         time step. update() should execute these actions in order:
-        
-        - Determine whether each virus particle survives and update the list of 
-          virus particles accordingly          
+
+        - Determine whether each virus particle survives and update the list of
+          virus particles accordingly
         - The current population density is calculated. This population density
           value is used until the next call to update().
         - Determine whether each virus particle should reproduce and add
-          offspring virus particles to the list of viruses in this patient. 
+          offspring virus particles to the list of viruses in this patient.
           The listof drugs being administered should be accounted for in the
-          determination of whether each virus particle reproduces. 
+          determination of whether each virus particle reproduces.
 
         returns: the total virus population at the end of the update (an
         integer)
@@ -207,7 +220,7 @@ def simulationWithDrug():
 
 #
 # PROBLEM 3
-#        
+#
 
 def simulationDelayedTreatment():
 
@@ -217,7 +230,7 @@ def simulationDelayedTreatment():
     and patient outcome.
     Histograms of final total virus populations are displayed for delays of 300,
     150, 75, 0 timesteps (followed by an additional 150 timesteps of
-    simulation).    
+    simulation).
     """
 
     # TODO
@@ -232,7 +245,7 @@ def simulationTwoDrugsDelayedTreatment():
     Runs simulations and make histograms for problem 6.
     Runs multiple simulations to show the relationship between administration
     of multiple drugs and patient outcome.
-   
+
     Histograms of final total virus populations are displayed for lag times of
     150, 75, 0 timesteps between adding drugs (followed by an additional 150
     timesteps of simulation).
@@ -244,7 +257,7 @@ def simulationTwoDrugsDelayedTreatment():
 
 #
 # PROBLEM 5
-#    
+#
 
 def simulationTwoDrugsVirusPopulations():
 
@@ -254,7 +267,7 @@ def simulationTwoDrugsVirusPopulations():
     administration of multiple drugs and patient outcome.
     Plots of total and drug-resistant viruses vs. time are made for a
     simulation with a 300 time step delay between administering the 2 drugs and
-    a simulations for which drugs are administered simultaneously.        
+    a simulations for which drugs are administered simultaneously.
 
     """
     #TODO

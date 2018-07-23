@@ -2,9 +2,9 @@
 # Name:
 # Date:
 
-import numpy
+# import numpy
 import random
-import pylab
+# import pylab
 
 ''' 
 Begin helper code
@@ -40,6 +40,8 @@ class SimpleVirus(object):
         maxBirthProb: Maximum reproduction probability (a float between 0-1)        
         clearProb: Maximum clearance probability (a float between 0-1).
         """
+        self.maxBirthProb = maxBirthProb
+        self.clearProb = clearProb
 
         # TODO
 
@@ -49,8 +51,12 @@ class SimpleVirus(object):
         returns: True with probability self.clearProb and otherwise returns
         False.
         """
-
         # TODO
+        r = random.random()
+        if r < self.clearProb:
+            return True
+        else:
+            return False
 
     def reproduce(self, popDensity):
         """
@@ -73,7 +79,13 @@ class SimpleVirus(object):
         """
 
         # TODO
-
+        r = random.random()
+        repProb = self.maxBirthProb * (1 - popDensity)
+        if r < repProb:
+            childvir = SimpleVirus(self.maxBirthProb, self.clearProb)
+            return childvir
+        else:
+            raise NoChildException
 
 class SimplePatient(object):
     """
@@ -92,17 +104,17 @@ class SimplePatient(object):
 
         maxPop: the  maximum virus population for this patient (an integer)
         """
-
         # TODO
+        self.viruses = viruses
+        self.maxPop = maxPop
 
     def getTotalPop(self):
         """
         Gets the current total virus population. 
         returns: The total virus population (an integer)
         """
-
         # TODO
-
+        return len(self.viruses)
     def update(self):
         """
         Update the state of the virus population in this patient for a single
@@ -120,6 +132,16 @@ class SimplePatient(object):
         """
 
         # TODO
+        for virus in self.viruses:
+            if virus.doesClear():
+                self.viruses.remove(virus)
+            popdensity = (float(self.getTotalPop()) / float(self.maxPop))
+            try:
+                self.viruses.append(virus.reproduce(popdensity))
+            except NoChildException:
+                continue
+            print self.getTotalPop()
+            return self.getTotalPop()
 
 
 #
@@ -134,3 +156,23 @@ def simulationWithoutDrug():
     """
 
     # TODO
+    vi = SimpleVirus(0.1, 0.05)
+    virlist = []
+    counter = 0
+    while int(counter) < 100:
+        virlist.append(vi)
+        counter = counter + 1
+    pat = SimplePatient(virlist, 1000)
+    updatecalls = 0
+    xgraph = []
+    ygraph = []
+    while int(updatecalls) < 300:
+        pat.update()
+        updatecalls = updatecalls + 1
+        x_axis = updatecalls
+        y_axis = pat.getTotalPop()
+        xgraph.append(x_axis)
+        ygraph.append(y_axis)
+    print [xgraph, ygraph]
+
+simulationWithoutDrug()
